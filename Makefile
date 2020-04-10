@@ -1,12 +1,15 @@
 #
-# Copyright (c) 2013, Mark Cavage. All rights reserved.
+# Copyright 2019, Joyent, Inc.
+#
 
 #
 # Tools
 #
+
+ISTANBUL	:= node_modules/.bin/istanbul
+FAUCET		:= node_modules/.bin/faucet
+NODE		:= node
 NPM		:= npm
-NPM_EXEC	:= npm
-TAP		:= ./node_modules/.bin/tap
 
 #
 # Files
@@ -16,22 +19,29 @@ JSL_CONF_NODE	 = tools/jsl.node.conf
 JSL_FILES_NODE   = $(JS_FILES)
 JSSTYLE_FILES	 = $(JS_FILES)
 JSSTYLE_FLAGS    = -f tools/jsstyle.conf
-
-CLEAN_FILES += ./node_modules build
+ESLINT_FILES	 = $(JS_FILES)
+BUILD		:= node
 
 include ./tools/mk/Makefile.defs
-include ./tools/mk/Makefile.node_deps.defs
 
 #
 # Repo-specific targets
 #
-.PHONY: all test
-all: $(REPO_DEPS)
+.PHONY: all
+all: $(NPM_EXEC)
 	$(NPM) install
 
-test:
-	$(TAP) test
+$(ISTANBUL): | $(NPM_EXEC)
+	$(NPM) install
+
+$(FAUCET): | $(NPM_EXEC)
+	$(NPM) install
+
+.PHONY: test
+test: $(ISTANBUL) $(FAUCET)
+	$(NODE) $(ISTANBUL) cover --print none test/run.js | $(FAUCET)
+
+CLEAN_FILES += ./node_modules ./build
 
 include ./tools/mk/Makefile.deps
-include ./tools/mk/Makefile.node_deps.targ
 include ./tools/mk/Makefile.targ
