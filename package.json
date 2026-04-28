@@ -1,5 +1,5 @@
 {
-  "name": "bunyan-syslog",
+  "name": "@grofers/bunyan-syslog",
   "description": "Syslog Stream for Bunyan",
   "version": "0.3.3",
   "author": "Mark Cavage",
@@ -11,10 +11,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/joyent/node-bunyan-syslog.git"
+    "url": "git://github.com/grofers/node-bunyan-syslog.git"
   },
   "bugs": {
-    "url": "https://github.com/joyent/node-bunyan-syslog/issues"
+    "url": "https://github.com/grofers/node-bunyan-syslog/issues"
+  },
+  "publishConfig": {
+    "registry": "https://blinkit-050634864816.d.codeartifact.us-west-2.amazonaws.com/npm/internal-npm-registry/",
+    "access": "restricted"
   },
   "dependencies": {
     "assert-plus": "0.1.5",
@@ -30,6 +34,10 @@
     "eslint-plugin-joyent": "~2.1.0"
   },
   "scripts": {
+    "ci:validate": "echo 'ci:validate placeholder'",
+    "ci:build": "echo 'ci:build placeholder (native build via node-gyp + Makefile)'",
+    "ci:version": "changeset version",
+    "ci:publish": "changeset publish",
     "test": "./node_modules/.bin/istanbul cover --print none test/run.js"
   },
   "engines": {
